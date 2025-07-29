@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Przebudzenie</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: monospace;
+      color: #00ff00;
+      background: url('tlo.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .content {
+      position: absolute;
+      top: 35%;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+      color: #00ff00;
+      text-shadow: 0 0 8px #00ff00;
+    }
+
+    .content h1 {
+      font-size: 32px;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .hidden {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      color: #00ff00;
+      opacity: 0.3;
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    #ageForm {
+      display: none;
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border: 1px solid #00ff00;
+      z-index: 3;
+      color: #00ff00;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    #ageForm button {
+      background: black;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      margin: 10px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #ageForm button:hover {
+      background: #00ff00;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="matrix"></canvas>
+
+  <div class="content">
+    <h1 onclick="alert('Wracasz do ŹRÓDŁA')">Nie bądź baterią dla Matrixa</h1>
+  </div>
+
+  <div class="hidden" onclick="document.getElementById('ageForm').style.display='block'">
+    Ukryta wiadomość: Jesteś światłem. Kod ŹRÓDŁA czeka na Ciebie.
+  </div>
+
+  <div id="ageForm">
+    <p>Wybierz swój wiek:</p>
+    <button onclick="alert('Wybrałeś: Do 30 lat')">Do 30 lat</button>
+    <button onclick="alert('Wybrałeś: Powyżej 30 lat')">Powyżej 30 lat</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "アァカサタナハマヤラワンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for (let i = 0; i < columns; i++) {
+      drops[i] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 35);
+  </script>
+</body>
+</html>
